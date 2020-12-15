@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <title></title>
+      <meta name="robots" content="noindex, nofollow" />
+      <meta
+         name="viewport"
+         content="initial-scale=1,maximum-scale=1,user-scalable=no"
+      />
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <!-- <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
+         <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet"/>  -->
+      <script src="http://tabatabaee.info/scripts/map.js"></script>
+      <link
+         href="http://tabatabaee.info/scripts/mapbox-gl.css"
+         rel="stylesheet"
+      />
+      <link
+         href="http://tabatabaee.info/scripts/myStyle.css"
+         rel="stylesheet"
+      />
+
+      <style>
+         body,
+         html,
+         .row-offcanvas {
+            height: 100%;
+ 
+         }
+         body {
+            margin: 0;
+            padding: 0;
+            padding-top: 50px;
+
+         }
+
+         #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 600px ;
+         }
+
+         .marker {
+            background-image: url('marker.png');
+            background-size: cover;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+         }
+
+         #watermark {
+            height: 19px;
+            width: 21%;
+            position: fixed;
+            bottom: 1px;
+            right: 4px;
+            opacity: 1.5;
+            z-index: 99;
+            color: rgb(68, 68, 68);
+            background-color: rgb(212, 211, 211);
+            text-align: center;
+         }
+
+         p {
+            color: white;
+         }
+
+
+         #sidebar {
+            width: inherit;
+            min-width: 220px;
+            max-width: 220px;
+            background-color: #f5f5f5;
+            float: left;
+            height: 100%;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+         }
+         #main {
+            height: 100%;
+            overflow: auto;
+         }
+
+         /*
+ * off Canvas sidebar
+ * --------------------------------------------------
+ */
+         @media screen and (max-width: 768px) {
+            .row-offcanvas {
+               position: relative;
+               -webkit-transition: all 0.25s ease-out;
+               -moz-transition: all 0.25s ease-out;
+               transition: all 0.25s ease-out;
+               width: calc(100% + 220px);
+            }
+
+            .row-offcanvas-left {
+               left: -220px;
+            }
+
+            .row-offcanvas-left.active {
+               left: 0;
+            }
+
+            .sidebar-offcanvas {
+               position: absolute;
+               top: 0;
+            }
+         }
+      </style>
+   </head>
+   <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <!--<div class="navbar-header">-->
+        <!--  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">-->
+        <!--    <span class="icon-bar"></span>-->
+        <!--    <span class="icon-bar"></span>-->
+        <!--    <span class="icon-bar"></span>-->
+        <!--  </button>-->
+        <!--<a class="navbar-brand" href="#">Brand</a>-->
+        <!--</div>-->
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <!--<li class="active"><a href="#">Home</a></li>-->
+                <!--<li><a href="#about">About</a></li>-->
+                <!--<li><a href="#contact">Contact</a></li>-->
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+    <!--/.navbar -->
+
+    <div class="row-offcanvas row-offcanvas-left">
+        <div id="sidebar" class="sidebar-offcanvas">
+            <div class="col-md-12">
+                <h3>Sidebar (fixed)</h3>
+                <ul class="nav nav-pills nav-stacked">
+                    <!-- <li class="active"><a href="#">Section</a></li> -->
+                    <form id="form" method="get" onsubmit="submitForm(event)" action="http://hypertester.ir/serverHypernetShowUnion/map1/chart.php">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="1">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="2">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="3">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="4">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="5">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="6">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="7">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="8">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="9">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="10">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="11">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="12">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="13">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="14">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="15">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="16">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="17">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="18">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="19">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="20">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="21">
+                        <input type="submit" name="reg" onclick="getInfos(this,event)" value="22">
+                    </form>
+                </ul>
+            </div>
+        </div>
+        <div id="main">
+            <div class="col-md-12">
+                <p class="visible-xs">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">
+                     <i class="glyphicon glyphicon-chevron-left"></i>
+                  </button>
+                </p>
+                <h2></h2>
+                <div id="map"></div>
+
+                <div id="watermark">Fishopping C.O</div>
+
+                <!--<div class="row">-->
+                <!--    <div class="col-md-12"><div class="well"><p></p></div></div>-->
+                <!--</div>-->
+                <!--<div class="row">-->
+                <!--    <div class="col-md-4"><div class="well"><p></p></div></div>-->
+                <!--    <div class="col-md-4"><div class="well"><p></p></div></div>-->
+                <!--    <div class="col-md-4"><div class="well"><p></p></div></div>-->
+
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+    <!--/row-offcanvas -->
+
+    <script>
+        // markers saved here
+        var currentMarkers = [];
+        var map = initMap('map');
+
+        //   var jsonData = $.ajax({
+        //       url: 'chart.php',
+        //       dataType: 'json',
+        //       async: false,
+        //   }).responseText;
+
+        //   var obj = jQuery.parseJSON(jsonData);
+        //   console.log(obj)
+        //   var geojson = obj;
+
+
+        var data = {
+                reg: 1
+            }
+            // sent ajax request
+        let d = jQuery.ajax({
+                url: "http://hypertester.ir/serverHypernetShowUnion/map1/chart.php",
+                method: "POST",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json",
+                async: false
+            })
+            //   console.log(d.responseJSON)
+        geojson = d.responseJSON;
+        console.log(geojson)
+
+        geojson.features.forEach(function(marker) {
+            // //   create a HTML element for each feature
+            var el = document.createElement('div');
+            el.className = 'marker';
+
+            // //   make a marker for each feature and add it to the map
+            new mapboxgl.Marker(el)
+                .setLngLat(marker.geometry.coordinates)
+                .setPopup(
+                    new mapboxgl.Popup({
+                        offset: 25
+                    }) // add popups
+                    .setHTML(
+                          '<h3>' +
+                            marker.properties.id +
+                        '<h3>' +
+                        marker.properties.title +
+                        '</h3><p>' +
+                        marker.properties.description +
+                        '</p>'
+                    )
+                )
+                .addTo(map);
+            // Add a layer showing the places.
+
+            // save tmp marker into currentMarkers
+
+        });
+
+        $(document).ready(function() {
+            $('[data-toggle=offcanvas]').click(function() {
+                $('.row-offcanvas').toggleClass('active');
+            });
+        });
+
+
+        /***
+         * mohammad ravnad scripts
+         */
+
+        //prevent default form for submit and redirect to onother page
+        function submitForm(e) {
+            e.preventDefault();
+        }
+
+
+        //get info base on submit value
+        function getInfos(submitInput, event) {
+            let submitValue = (event.target.getAttribute('value'))
+
+            var data = {
+                    reg: submitValue
+                }
+                // sent ajax request
+            let d = jQuery.ajax({
+                url: "http://hypertester.ir/serverHypernetShowUnion/map1/chart.php",
+                method: "POST",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json",
+                async: false
+            })
+            console.log(d.responseJSON)
+                // remove markers 
+            $(".marker").remove();
+            d.responseJSON.features.forEach(function(marker) {
+                // //   create a HTML element for each feature
+                var el = document.createElement('div');
+                el.className = 'marker';
+                newmapMarker = new mapboxgl.Marker(el)
+                    .setLngLat(marker.geometry.coordinates)
+                    .setPopup(
+                        new mapboxgl.Popup({
+                            offset: 25
+                        }) // add popups
+                        .setHTML(
+                              '<h3>' +
+                            marker.properties.id +
+                            '<h3>' +
+                            marker.properties.title +
+                            '</h3><p>' +
+                            marker.properties.description +
+                            '</p>'
+                        )
+                    )
+                    .addTo(map);
+
+            })
+        }
+    </script>
+</body>
+
+</html>
+
