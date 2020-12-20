@@ -3,6 +3,8 @@
 // require_once("./../connection.php");
 // get the raw POST data
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Headers: origin, content-type, accept");
 require_once("./../connection.php");
 
  $conn = new mysqli($servername, $username, $password, $db_name);
