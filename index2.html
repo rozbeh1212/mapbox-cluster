@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport"
+    content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="http://tabatabaee.info/scripts/map.js"></script>
+    <link href="http://tabatabaee.info/scripts/mapbox-gl.css"
+    rel="stylesheet" />
+    <link href="http://tabatabaee.info/scripts/myStyle.css"
+    rel="stylesheet" />
+
+    <style>
+      body,
+      html {
+        min-height: 100%;
+      }
+
+      body {
+        padding-top: 54px;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 1100px;
+        height: 800px;
+        left: 250px;
+      }
+
+      .marker {
+        background-image: url('marker.png');
+        background-size: cover;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      #watermark {
+        height: 19px;
+        width: 21%;
+        position: fixed;
+        bottom: 1px;
+        right: 4px;
+        opacity: 1.5;
+        z-index: 99;
+        color: rgb(68, 68, 68);
+        background-color: rgb(212, 211, 211);
+        text-align: center;
+      }
+
+      p {
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <div>
+        <form id="form" method="post" onsubmit="submitForm(event)"
+        action="http://hypertester.ir/serverHypernetShowUnion/map1/chart.php"
+        >
+          <div class="form-group">
+            <script>
+              jQuery(document).ready(function () {
+                var data = jQuery.ajax({
+                  url:
+                    'http://hypertester.ir/serverHypernetShowUnion/map1/Getlayersdata.php',
+                  async: false,
+                  dataType: 'json',
+                  contentType: 'application/json',
+                }).responseText;
+
+                var data2 = jQuery.parseJSON(data).features;
+                var i = 1;
+
+                var len = data2.length;
+
+                while (len > 1) {
+                  // Create a submit button
+                  var s = document.createElement('input');
+                  s.setAttribute('type', 'submit');
+                  s.setAttribute('value', data2[i]['RegionID']);
+                  s.setAttribute('name', 'reg');
+                  //   s.setAttribute("id", "btn_"+i);
+                  s.setAttribute('onclick', 'getInfos(this,event)');
+                  form.append(s);
+                  var br = document.createElement('br');
+                  form.appendChild(br);
+
+                  i++;
+                  len--;
+                }
+                document.getElementsByTagName('body')[0].appendChild(form);
+              });
+              //   }
+              // });
+            </script>
+          </div>
+        </form>
+
+        <div id="map"></div>
+        <div id="watermark">Fishopping C.O</div>
+
+        <!-- </main> -->
+      </div>
+    </div>
+
+    <!--/row-offcanvas -->
+    <script>
+      // markers saved here var currentMarkers = [];
+      var map = initMap('map');
+      data = {
+        reg: 5,
+      };
+
+      // sent ajax request
+      let d = jQuery.ajax({
+        url: 'http://hypertester.ir/serverHypernetShowUnion/map1/chart.php',
+        method: 'POST',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json',
+        async: false,
+      });
+      geojson = d.responseJSON;
+
+      $(document).ready(function () {
+        $('[data-toggle=offcanvas]').click(function () {
+          $('.row-offcanvas').toggleClass('active');
+        });
+      });
+
+      function getInfos(submitInput, event) {
+        let submitValue = event.target.getAttribute('value');
+
+        var data = {
+          reg: submitValue,
+        };
+        let d = jQuery.ajax({
+          url: 'http://hypertester.ir/serverHypernetShowUnion/map1/chart.php',
+          method: 'POST',
+          data: JSON.stringify(data),
+          dataType: 'json',
+          contentType: 'application/json',
+          async: false,
+        });
+        geojson = d.responseJSON;
+        //jQuery('markers').remove();
+      }
+
+      function submitForm(e) {
+        e.preventDefault();
+      }
+      // console.log(geojson);
+
+      // geojson.features.forEach(function (marker) {// //   create a
+      //    HTML element for each feature var el =
+      //    document.createElement('div'); el.className = 'marker';
+
+      //    new mapboxgl.Marker(el)
+      //       .setLngLat(marker.geometry.coordinates) .setPopup(new
+      //       mapboxgl.Popup({offset: 25,}) // add popups
+      //       .setHTML('<h3>' + marker.properties.title + '</h3><p>'
+      //       + marker.properties.description + '</p>'
+      //             )
+      //       )
+      //       .addTo(map);
+      // });
+
+      // $(document).ready(function ()
+      //    {$('[data-toggle=offcanvas]').click(function ()
+      //    {$('.row-offcanvas').toggleClass('active');
+      //    });
+      // });
+
+      // function submitForm(e) {e.preventDefault();
+      // }
+
+      // //get info base on submit value function
+      // getInfos(submitInput, event) {let submitValue =
+      // event.target.getAttribute('value');
+
+      //    var data = {reg: submitValue,
+      //    };
+      //    // sent ajax request let d = jQuery.ajax({url:
+      //    'http://hypertester.ir/serverHypernetShowUnion/map1/chart2.php',
+      //    method: 'POST', data: JSON.stringify(data), dataType:
+      //    'json', contentType: 'application/json', async: false,
+      //    });
+      //    console.log(d.responseJSON);
+
+      //    $('.marker').remove();
+      //    d.responseJSON.features.forEach(function (marker) {// //
+      //    create a HTML element for each feature var el =
+      //    document.createElement('div'); el.className = 'marker';
+      //    newmapMarker = new mapboxgl.Marker(el)
+      //    .setLngLat(marker.geometry.coordinates) .setPopup(new
+      //    mapboxgl.Popup({offset: 25,}) // add popups
+      //    .setHTML('<h3>' + marker.properties.title + '</h3><p>' +
+      //    marker.properties.description + '</p>'
+      //                )
+      //          )
+      //          .addTo(map);
+      //    });
+      // }
+
+      // new code
+      map.on('load', function () {
+        map.addSource('markers', {
+          type: 'geojson',
+          data: geojson,
+         
+          cluster: true,
+          clusterMaxZoom: 14, // Max zoom to cluster points on
+          clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+        });
+
+        map.addLayer({
+          id: 'clusters',
+          type: 'circle',
+          source: 'markers',
+          filter: ['has', 'point_count'],
+          paint: {
+            'circle-color': [
+              'step',
+              ['get', 'point_count'],
+              '#51bbd6',
+              100,
+              '#f1f075',
+              750,
+              '#f28cb1',
+            ],
+            'circle-radius': [
+              'step',
+              ['get', 'point_count'],
+              20,
+              100,
+              30,
+              750,
+              40,
+            ],
+          },
+        });
+
+        map.addLayer({
+          id: 'cluster-count',
+          type: 'symbol',
+          source: 'markers',
+          filter: ['has', 'point_count'],
+          layout: {
+            'text-field': '{point_count_abbreviated}',
+            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+            'text-size': 12,
+          },
+        });
+
+
+map.loadImage(
+'http://hypertester.ir/serverHypernetShowUnion/map1/shop.png',
+function (error, image) {
+if (error) throw error;
+map.addImage('shop', image);
+
+})
+
+        map.addLayer({
+          id: 'unclustered-point',
+          type: 'symbol',
+          source: 'markers',
+          filter: ['!', ['has', 'point_count']],
+          layout:{
+          "icon-image": "shop",
+                        "icon-size": 0.5,
+                        "icon-anchor": 'bottom',
+                        "icon-ignore-placement": true,
+                        "icon-allow-overlap": true
+
+
+          }
+        });
+
+        // inspect a cluster on click
+        map.on('click', 'clusters', function (e) {
+          var features = map.queryRenderedFeatures(e.point, {
+            layers: ['clusters'],
+          });
+          var clusterId = features[0].properties.cluster_id;
+          map
+            .getSource('markers')
+            .getClusterExpansionZoom(clusterId, function (err, zoom) {
+              if (err) return;
+
+              map.easeTo({
+                center: features[0].geometry.coordinates,
+                zoom: zoom,
+              });
+            });
+        });
+
+        map.on('mouseenter', 'clusters', function () {
+          map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', 'clusters', function () {
+          map.getCanvas().style.cursor = '';
+        });
+
+      
+        map.on('click', 'unclustered-point', function (e) {
+          var coordinates = e.features[0].geometry.coordinates.slice();
+          var mag = e.features[0].properties.title;
+          var description = e.features[0].properties.description;
+          var address = e.features[0].properties.address;
+
+          if (e.features[0].properties.tsunami === 1) {
+            tsunami = 'yes';
+          } else {
+            tsunami = 'no';
+          }
+
+      
+
+          new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(
+              'نام فروشگاه : ' +
+                mag +
+                '<br>شماره تماس : ' +
+                description +
+                '<br>آدرس : ' +
+                address
+            )
+            .addTo(map);
+        });
+      });
+
+
+    </script>
+  </body>
+</html>
